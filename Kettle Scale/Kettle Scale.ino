@@ -8,6 +8,7 @@
 #include <HX711.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <Preferences.h>
 
 // HX711 circuit wiring
 const int LOADCELL_DOUT_PIN = 16;
@@ -36,6 +37,8 @@ int mqttPort = 1883;
 
 long last_time = 0;
 char data[100];
+
+Preferences preferences;
 
 void displayWeight(int weight) {
   float cups = (float)weight / 244;
@@ -99,6 +102,11 @@ void setupMQTT() {
   mqttClient.setServer(mqttServer, mqttPort);
   // set the callback function
   mqttClient.setCallback(callback);
+}
+
+void setupSavingCups() {
+  preferences.begin("kettleScale", false);
+  
 }
 
 void setup() {
